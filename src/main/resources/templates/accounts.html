@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Account list</title>
 </head>
 <body>
-$END$
+<ul>
+    <li><a data-th-href="@{/}">Account list</a></li>
+    <li><a data-th-href="@{/new}">New account</a></li>
+</ul>
+<h1>Search accounts</h1>
+<form method="post">
+    <table>
+        <tr>
+            <th>Name</th>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <th>Number</th>
+            <td><input type="text" name="number"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit">Search accounts</button></td>
+        </tr>
+    </table>
+</form>
+<h1>Account list</h1>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Number</th>
+        <th>Premium</th>
+        <th>Balance</th>
+    </tr>
+    <tr data-th-each="account: ${accounts}">
+        <td data-th-text="${account.name}"></td>
+        <td data-th-text="${account.number}"></td>
+        <td data-th-text="${account.premium ? 'PREMIUM' : 'STANDARD'}"></td>
+        <td data-th-text="${account.balance}"></td>
+    </tr>
+</table>
 </body>
 </html>

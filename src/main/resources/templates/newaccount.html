@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>New account</title>
 </head>
 <body>
-$END$
+<ul>
+    <li><a data-th-href="@{/}">Account list</a></li>
+    <li><a data-th-href="@{/new}">New account</a></li>
+</ul>
+<h1>New account</h1>
+<form method="post" data-th-object="${account}">
+    <table>
+        <tr>
+            <th>Name</th>
+            <td><input type="text" data-th-field="*{name}"></td>
+        </tr>
+        <tr>
+            <th>Number</th>
+            <td><input type="text" data-th-field="*{number}"></td>
+        </tr>
+        <tr>
+            <th>Premium</th>
+            <td><input type="checkbox" data-th-field="*{premium}"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit">Create account</button></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>
