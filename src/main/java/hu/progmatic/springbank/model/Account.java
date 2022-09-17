@@ -1,9 +1,9 @@
 package hu.progmatic.springbank.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -20,6 +20,10 @@ public class Account {
     private boolean premium;
 
     private int balance;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("name")
+    private List<Owner> owners = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -59,5 +63,13 @@ public class Account {
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public List<Owner> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(List<Owner> owners) {
+        this.owners = owners;
     }
 }

@@ -32,12 +32,18 @@
         <th>Number</th>
         <th>Premium</th>
         <th>Balance</th>
+        <th>Owners</th>
     </tr>
     <tr data-th-each="account: ${accounts}">
         <td data-th-text="${account.name}"></td>
         <td data-th-text="${account.number}"></td>
         <td data-th-text="${account.premium ? 'PREMIUM' : 'STANDARD'}"></td>
         <td data-th-text="${account.balance}"></td>
+        <td>
+            <ul>
+                <li data-th-each="owner: ${account.owners}" data-th-text="${owner.name}"></li>
+            </ul>
+        </td>
     </tr>
 </table>
 </body>
