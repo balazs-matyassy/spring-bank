@@ -9,8 +9,10 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,15 +42,19 @@ public class AccountService {
 
         Root<Account> account = criteriaQuery.from(Account.class);
 
+        List<Predicate> predicates = new ArrayList<>();
+
         if (!name.isBlank()) {
             Predicate namePredicate = criteriaBuilder.equal(account.get("name"), name);
-            criteriaQuery.where(namePredicate);
+            predicates.add(namePredicate);
         }
 
         if (!number.isBlank()) {
             Predicate numberPredicate = criteriaBuilder.like(account.get("number"), "%" + number + "%");
-            criteriaQuery.where(numberPredicate);
+            predicates.add(numberPredicate);
         }
+
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
 
         TypedQuery<Account> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
@@ -56,6 +62,27 @@ public class AccountService {
 
     public Account saveAccount(Account account) {
         return accountRepository.save(account);
+    }
+
+    // https://www.baeldung.com/spring-transactional-propagation-isolation
+    @Transactional
+    public void transfer(String nameFrom, String nameTo, int amount) {
+        Account accountFrom = accountRepository.findByName(nameFrom).orElseThrow();
+        Account accountTo = accountRepository.findByName(nameTo).orElseThrow();
+
+        accountFrom.setBalance(accountFrom.getBalance() - amount);
+        accountTo.setBalance(accountTo.getBalance() + amount);
+
+        // tranzakciók nélkül -1000
+        accountRepository.save(accountFrom);
+
+        // Itt megy el az áram... :(
+        if (true) {
+            throw new RuntimeException();
+        }
+
+        // tranzakciók nélkül 0 (elveszik 1000 forint)
+        accountRepository.save(accountTo);
     }
 
 }

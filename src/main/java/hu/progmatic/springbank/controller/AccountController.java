@@ -49,4 +49,11 @@ public class AccountController {
         return "redirect:/";
     }
 
+    @GetMapping("/transfer")
+    public String transfer() {
+        accountService.transfer("Józsi", "Pista", 1000);
+
+        return "redirect:/";
+    }
+
 }

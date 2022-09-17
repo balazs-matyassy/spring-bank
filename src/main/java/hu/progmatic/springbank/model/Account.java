@@ -1,5 +1,6 @@
 package hu.progmatic.springbank.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -11,6 +12,7 @@ public class Account {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String number;
