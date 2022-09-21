@@ -32,6 +32,7 @@
         <th>Number</th>
         <th>Premium</th>
         <th>Balance</th>
+        <th>Photo</th>
         <th>Owners</th>
     </tr>
     <tr data-th-each="account: ${accounts}">
@@ -39,6 +40,7 @@
         <td data-th-text="${account.number}"></td>
         <td data-th-text="${account.premium ? 'PREMIUM' : 'STANDARD'}"></td>
         <td data-th-text="${account.balance}"></td>
+        <td><img data-th-src="@{/photo/{id}(id=${account.id})}" alt="photo" width="100" data-th-if="${account.photoName != ''}"></td>
         <td>
             <ul>
                 <li data-th-each="owner: ${account.owners}" data-th-text="${owner.name}"></li>

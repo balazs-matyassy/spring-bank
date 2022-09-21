@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -58,6 +59,10 @@ public class AccountService {
 
         TypedQuery<Account> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
+    }
+
+    public Optional<Account> getById(long id) {
+        return accountRepository.findById(id);
     }
 
     public List<Account> getByOwnerName(String name) {

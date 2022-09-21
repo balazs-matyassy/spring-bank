@@ -21,6 +21,13 @@ public class Account {
 
     private int balance;
 
+    private String photoType;
+
+    private String photoName;
+
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] photoData;
+
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("name")
     private List<Owner> owners = new ArrayList<>();
@@ -71,5 +78,29 @@ public class Account {
 
     public void setOwners(List<Owner> owners) {
         this.owners = owners;
+    }
+
+    public String getPhotoType() {
+        return photoType;
+    }
+
+    public void setPhotoType(String photoType) {
+        this.photoType = photoType;
+    }
+
+    public String getPhotoName() {
+        return photoName;
+    }
+
+    public void setPhotoName(String photoName) {
+        this.photoName = photoName;
+    }
+
+    public byte[] getPhotoData() {
+        return photoData;
+    }
+
+    public void setPhotoData(byte[] photoData) {
+        this.photoData = photoData;
     }
 }

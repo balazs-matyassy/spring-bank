@@ -10,7 +10,7 @@
     <li><a data-th-href="@{/new}">New account</a></li>
 </ul>
 <h1>New account</h1>
-<form method="post" data-th-object="${account}">
+<form method="post" data-th-object="${account}" enctype="multipart/form-data">
     <table>
         <tr>
             <th>Name</th>
@@ -23,6 +23,10 @@
         <tr>
             <th>Premium</th>
             <td><input type="checkbox" data-th-field="*{premium}"></td>
+        </tr>
+        <tr>
+            <th>Photo</th>
+            <td><input type="file" name="photo"></td>
         </tr>
         <tr>
             <td colspan="2"><button type="submit">Create account</button></td>

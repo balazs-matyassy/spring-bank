@@ -2,12 +2,15 @@ package hu.progmatic.springbank.controller;
 
 import hu.progmatic.springbank.model.Account;
 import hu.progmatic.springbank.service.AccountService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -43,11 +46,32 @@ public class AccountController {
         return "newaccount";
     }
 
+    // https://www.baeldung.com/spring-boot-thymeleaf-image-upload
     @PostMapping("/new")
-    public String saveNewAccount(Account account) {
-        accountService.saveAccount(account);
+    public String saveNewAccount(Account account, @RequestParam("photo") MultipartFile photo) {
+        try {
+            account.setPhotoName(photo.getOriginalFilename());
+            account.setPhotoType(photo.getContentType());
+            account.setPhotoData(photo.getBytes());
+            accountService.saveAccount(account);
 
-        return "redirect:/";
+            return "redirect:/";
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return "redirect:/new";
+        }
+    }
+
+    // https://www.baeldung.com/spring-controller-return-image-file
+    // https://www.baeldung.com/spring-response-status-exception
+    @GetMapping(value = "/photo/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] downloadPhoto(@PathVariable long id) {
+        Account account = accountService.getById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found.")
+        );
+
+        return account.getPhotoData();
     }
 
     @GetMapping("/transfer")
