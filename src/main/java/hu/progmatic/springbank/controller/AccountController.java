@@ -1,7 +1,9 @@
 package hu.progmatic.springbank.controller;
 
+import hu.progmatic.springbank.dto.AccountDTO;
 import hu.progmatic.springbank.model.Account;
 import hu.progmatic.springbank.service.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -47,9 +49,11 @@ public class AccountController {
     }
 
     // https://www.baeldung.com/spring-boot-thymeleaf-image-upload
+    // https://www.baeldung.com/spring-boot-bean-validation
     @PostMapping("/new")
-    public String saveNewAccount(Account account, @RequestParam("photo") MultipartFile photo) {
+    public String saveNewAccount(@Valid AccountDTO accountDTO, @RequestParam("photo") MultipartFile photo) {
         try {
+            Account account = new Account(accountDTO.getName(), accountDTO.getNumber(), accountDTO.isPremium());
             account.setPhotoName(photo.getOriginalFilename());
             account.setPhotoType(photo.getContentType());
             account.setPhotoData(photo.getBytes());

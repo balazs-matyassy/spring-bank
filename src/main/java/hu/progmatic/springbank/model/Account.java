@@ -32,6 +32,16 @@ public class Account {
     @OrderBy("name")
     private List<Owner> owners = new ArrayList<>();
 
+    public Account() {
+
+    }
+
+    public Account(String name, String number, boolean premium) {
+        this.name = name;
+        this.number = number;
+        this.premium = premium;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
